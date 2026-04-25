@@ -1,0 +1,199 @@
+{
+  "name": "Lead Gen Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Contact & Lead Form",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Message",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        16,
+        16
+      ],
+      "id": "a6946f55-4242-4244-8776-a009bee280c8",
+      "name": "On form submission",
+      "webhookId": "7b56ad38-18c9-4e64-9a17-834e2db29e03"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appxRpaiIhSnhMz1H",
+          "mode": "list",
+          "cachedResultName": "Lead CRM",
+          "cachedResultUrl": "https://airtable.com/appxRpaiIhSnhMz1H"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbldBwsR4kUOmhAjZ",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://airtable.com/appxRpaiIhSnhMz1H/tbldBwsR4kUOmhAjZ"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "== {{ $json.Name }}",
+            "Email": "== {{ $json.Email }}",
+            "Message": "== {{ $json.Message }}",
+            "Source": "n8n Form"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        16
+      ],
+      "id": "5d8cce42-46fb-498f-9b55-0db493991d90",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "IeTe46r33Ozayz1O",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "asnaharis06@gmail.com",
+        "toEmail": "asnaharis06@gmail.com",
+        "subject": "=Thanks for reaching out, {{ $('On form submission').item.json.Name }}!",
+        "html": "=Hi {{ $('On form submission').item.json.Name }},\n\nThanks for getting in touch! We have received your message and will get back to you within 24 hours.\n\n\n\nBest regards,\nThe Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        432,
+        80
+      ],
+      "id": "a355fad2-1b59-45d6-98a5-4862ce6634ed",
+      "name": "Send an Email",
+      "webhookId": "0c15e61d-fa47-46ba-b0eb-c230045e0575",
+      "credentials": {
+        "smtp": {
+          "id": "BBppWqAeCwrEbawS",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c4b6fc15-5df2-4392-88a0-0812018d1074",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "28b6b1e97c097bf9fbb8c25af90ddae3b947016285bbca7190fbb4a5f46d84b2"
+  },
+  "id": "otBX6Vb0zszqY9UC",
+  "tags": []
+}
